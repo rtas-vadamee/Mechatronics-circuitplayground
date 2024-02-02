@@ -1,0 +1,58 @@
+import time
+import random
+import board
+import neopixel
+
+# Function to turn NeoPixel green
+def turn_green():
+    pixels.fill((0, 255, 0))
+    pixels.show()
+
+# Function to turn NeoPixel red
+def turn_red():
+    pixels.fill((255, 0, 0))
+    pixels.show()
+
+# Function to turn NeoPixel blue
+def turn_blue():
+    pixels.fill((0, 0, 255))
+    pixels.show()
+
+# Function to check if the user input is valid
+def validate_input(user_input):
+    return 1 <= user_input <= 10
+
+# Ask the user for a number between 1 and 10
+user_number = int(input("Enter a number between 1 and 10: "))
+
+# Validate user input
+if not validate_input(user_number):
+    print("Please enter a valid number between 1 and 10.")
+else:
+    # Initialize NeoPixel
+    pixels = neopixel.NeoPixel(board.NEOPIXEL, 1, brightness=0.2, auto_write=False)
+
+    # Turn NeoPixel green to indicate the start of the game
+    turn_green()
+
+    # Generate a random number
+    random_number = random.randint(1, 10)
+
+    # Setup while loop with loop count variable
+    count = 0
+    while count < 5:
+        # Inside the loop, test if the random number is equal to the user number
+        if random_number == user_number:
+            # If the random number matches the user number, turn NeoPixel blue and break out of the loop
+            turn_blue()
+            print(f"I Win! I guessed your number in {count + 1} tries.")
+            break
+        else:
+            # If the random number doesn't match, turn NeoPixel red, increment the loop count, and continue
+            turn_red()
+            count += 1
+            time.sleep(1)  # Optional delay for better visibility of NeoPixel changes
+
+    # If the loop ends without a break (after 5 loops), the user wins
+    if count == 5:
+        print(f"You Win! I did not guess your number in {count} tries.")
